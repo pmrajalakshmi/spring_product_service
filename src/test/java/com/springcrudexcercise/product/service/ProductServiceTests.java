@@ -10,6 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
@@ -51,8 +53,7 @@ public class ProductServiceTests {
     @Test
     public void saveProduct_without_name_shouldFail() {
 
-        // given - precondition or setup
-        //given(productRepository.save(productWithoutName)).willReturn(productWithoutName);
+       //given
         Product productWithoutName = new Product();
         productWithoutName.setId(2);
 
@@ -60,5 +61,31 @@ public class ProductServiceTests {
         assertThrows(ProductException.class, () -> {
             productService.saveProduct(productWithoutName);
         });
+    }
+
+    @Test
+    public void saveProduct_without_id_shouldFail() {
+
+      //given
+        Product productWithoutId = new Product();
+        productWithoutId.setName("testName");
+
+        // then
+        assertThrows(ProductException.class, () -> {
+            productService.saveProduct(productWithoutId);
+        });
+    }
+    @Test
+    public void getProductById_should_return_valid_Product_for_exist() {
+        // given - precondition or setup
+        given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
+
+        // when -  action or the behaviour that we are going test
+        Optional<Product> findProduct = productService.getProductById(product.getId());
+
+        // then
+        assertThat(findProduct).isNotEmpty();
+
+        assertThat(findProduct.get().getId()).isEqualTo(product.getId());
     }
 }
