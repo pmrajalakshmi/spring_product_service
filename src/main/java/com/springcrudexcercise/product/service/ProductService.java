@@ -35,9 +35,6 @@ public class ProductService {
 
     }
 
-    private void test( String userName) {
-        userName = "aaa";
-    }
 
     public Product saveProduct(Product product) {
         validateProduct(product);
@@ -45,17 +42,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public void deleteProduct(Product product) {
-        productRepository.delete(product);
-    }
 
-    public void updateProduct(Product product) {
-        productRepository.save(product);
-    }
-
-    public void deleteAllProducts() {
-        productRepository.deleteAll();
-    }
 
     private void validateProduct(Product product) {
         if (product.getId() == null || product.getId().toString().trim().length() == 0) {
